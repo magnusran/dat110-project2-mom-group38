@@ -12,7 +12,23 @@ public class DisplayDevice {
 	public static void main (String[] args) {
 		
 		System.out.println("Display starting ...");
-		
+
+		Client client = new Client("display", "", 8080);
+		client.connect();
+		client.createTopic("temperature");
+		client.subscribe("temperature");
+
+		for (int i = 0; i < COUNT; i++) {
+			PublishMsg message = (PublishMsg) client.receive();
+			int temp = Integer.parseInt(message.getMessage());
+
+			System.out.println("DISPLAY: " + temp);
+		}
+
+
+		client.unsubscribe("temperature");
+		client.disconnect();
+
 		// TODO - START
 				
 		// create a client object and use it to
@@ -28,7 +44,7 @@ public class DisplayDevice {
 		
 		System.out.println("Display stopping ... ");
 		
-		throw new UnsupportedOperationException(TODO.method());
+		//throw new UnsupportedOperationException(TODO.method());
 		
 	}
 }
